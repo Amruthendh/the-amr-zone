@@ -5,60 +5,84 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Google Font for Gamer Look -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
 <style>
 
 body{
-margin:0;
-font-family:Arial;
-background:url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-color:white;
-text-align:center;
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  color:white;
+  text-align:center;
 }
 
 header{
-background:rgba(0,0,0,0.7);
-padding:40px;
+  background:rgba(0,0,0,0.7);
+  padding:40px;
 }
 
 h1{
-font-size:45px;
-color:red;
+  font-family: 'Orbitron', sans-serif;
+  font-size:45px;
+  color:red;
+  letter-spacing: 2px;
+}
+
+h2{
+  margin-bottom: 20px;
 }
 
 .section{
-padding:40px 20px;
+  padding:40px 20px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
 .box{
-background:rgba(0,0,0,0.7);
-margin:15px;
-padding:20px;
-border-radius:10px;
+  background:rgba(0,0,0,0.7);
+  margin:15px;
+  padding:20px;
+  border-radius:10px;
+  flex:1 1 250px;
+  max-width:300px;
 }
 
 button{
-background:red;
-color:white;
-border:none;
-padding:12px 25px;
-font-size:16px;
-border-radius:8px;
-margin:10px;
-cursor:pointer;
+  background:red;
+  color:white;
+  border:none;
+  padding:12px 25px;
+  font-size:16px;
+  border-radius:8px;
+  margin:10px;
+  cursor:pointer;
+  transition: 0.3s;
 }
 
 button:hover{
-background:white;
-color:black;
+  background:white;
+  color:black;
+  transform: scale(1.1);
 }
 
 footer{
-background:rgba(0,0,0,0.7);
-padding:20px;
-margin-top:40px;
+  background:rgba(0,0,0,0.7);
+  padding:20px;
+  margin-top:40px;
+  font-size:14px;
+  color:#ccc;
+}
+
+#clock{
+  font-size:30px;
+  color:#00ff00;
+  font-weight:bold;
 }
 
 </style>
@@ -75,9 +99,9 @@ margin-top:40px;
 
 <h2>Services</h2>
 
-<div class="box">Reels / Shorts Editing</div>
-<div class="box">Gaming Edits</div>
-<div class="box">YouTube Video Editing</div>
+<div class="box">✂️ Reels / Shorts Editing</div>
+<div class="box">🎮 Gaming Edits</div>
+<div class="box">📹 YouTube Video Editing</div>
 
 </div>
 
@@ -92,11 +116,16 @@ margin-top:40px;
 
 <div class="section">
 
+<h2>Current Time</h2>
+<div class="box" id="clock">00:00:00</div>
+
+</div>
+
+<div class="section">
+
 <a href="https://instagram.com/amrut__hendh_7_z" target="_blank">
 <button>Follow me on Instagram</button>
 </a>
-
-<br>
 
 <a href="https://wa.me/919207006321?text=I%20want%20edit" target="_blank">
 <button>Message Me on WhatsApp</button>
@@ -108,5 +137,24 @@ margin-top:40px;
 © 2026 AMR CREATIONS
 </footer>
 
+<script>
+function updateClock() {
+  const now = new Date();
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  let seconds = now.getSeconds();
+
+  hours = hours < 10 ? '0'+hours : hours;
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  seconds = seconds < 10 ? '0'+seconds : seconds;
+
+  document.getElementById('clock').innerText = hours + ':' + minutes + ':' + seconds;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+
 </body>
 </html>
+
