@@ -1,4 +1,4 @@
-html
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,23 +29,12 @@ h1{
 font-family:'Orbitron',sans-serif;
 font-size:45px;
 color:red;
-letter-spacing:2px;
 }
-
-/* Alcohol warning banner */
 
 .warning{
 background:linear-gradient(90deg,#ff0000,#ff7300);
 padding:15px;
-font-size:18px;
 font-weight:bold;
-animation:blink 1.5s infinite;
-}
-
-@keyframes blink{
-0%{opacity:1;}
-50%{opacity:0.6;}
-100%{opacity:1;}
 }
 
 .section{
@@ -61,7 +50,7 @@ margin:15px;
 padding:20px;
 border-radius:10px;
 flex:1 1 250px;
-max-width:300px;
+max-width:400px;
 }
 
 button{
@@ -73,27 +62,37 @@ font-size:16px;
 border-radius:8px;
 margin:10px;
 cursor:pointer;
-transition:0.3s;
 }
 
 button:hover{
 background:white;
 color:black;
-transform:scale(1.1);
-}
-
-input,textarea{
-width:80%;
-padding:10px;
-margin:10px;
-border-radius:5px;
-border:none;
 }
 
 #clock{
 font-size:30px;
 color:#00ff00;
 font-weight:bold;
+}
+
+/* GAME AREA */
+
+#gameArea{
+width:300px;
+height:300px;
+background:#111;
+margin:auto;
+position:relative;
+border-radius:10px;
+}
+
+#circle{
+width:40px;
+height:40px;
+background:red;
+border-radius:50%;
+position:absolute;
+cursor:pointer;
 }
 
 footer{
@@ -108,7 +107,7 @@ margin-top:40px;
 <body>
 
 <div class="warning">
-🚫 DON'T USE ALCOHOL – STAY SAFE • STAY STRONG 💪
+🚫 DON'T USE ALCOHOL – STAY SAFE • STAY STRONG
 </div>
 
 <header>
@@ -143,14 +142,19 @@ margin-top:40px;
 
 <div class="section">
 
-<h2>Order / Message</h2>
+<h2>Mini Game 🎮</h2>
 
-<form>
-<input type="text" placeholder="Your Name"><br>
-<input type="email" placeholder="Your Email"><br>
-<textarea placeholder="Type your editing request"></textarea><br>
-<button type="submit">Send Message</button>
-</form>
+<div class="box">
+
+<p>Click the red circle as fast as you can!</p>
+
+<h3 id="score">Score: 0</h3>
+
+<div id="gameArea">
+<div id="circle"></div>
+</div>
+
+</div>
 
 </div>
 
@@ -172,6 +176,8 @@ margin-top:40px;
 
 <script>
 
+/* CLOCK */
+
 function updateClock(){
 const now = new Date();
 
@@ -189,10 +195,42 @@ document.getElementById("clock").innerHTML = h+":"+m+":"+s;
 setInterval(updateClock,1000);
 updateClock();
 
+/* GAME */
+
+let score = 0;
+
+const circle = document.getElementById("circle");
+
+circle.onclick = function(){
+
+score++;
+
+document.getElementById("score").innerHTML = "Score: " + score;
+
+moveCircle();
+
+}
+
+function moveCircle(){
+
+let x = Math.random()*260;
+
+let y = Math.random()*260;
+
+circle.style.left = x + "px";
+circle.style.top = y + "px";
+
+}
+
+moveCircle();
+
 </script>
 
 </body>
 </html>
+```
+
+
 
 
 
