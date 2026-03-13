@@ -1,88 +1,105 @@
+html
 <!DOCTYPE html>
 <html>
 <head>
 <title>AMR CREATIONS</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Font for Gamer Look -->
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
 <style>
 
 body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-  color:white;
-  text-align:center;
+margin:0;
+font-family:Arial;
+background:url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+color:white;
+text-align:center;
 }
 
 header{
-  background:rgba(0,0,0,0.7);
-  padding:40px;
+background:rgba(0,0,0,0.7);
+padding:40px;
 }
 
 h1{
-  font-family: 'Orbitron', sans-serif;
-  font-size:45px;
-  color:red;
-  letter-spacing: 2px;
+font-family:'Orbitron',sans-serif;
+font-size:45px;
+color:red;
+letter-spacing:2px;
 }
 
-h2{
-  margin-bottom: 20px;
+/* Alcohol warning banner */
+
+.warning{
+background:linear-gradient(90deg,#ff0000,#ff7300);
+padding:15px;
+font-size:18px;
+font-weight:bold;
+animation:blink 1.5s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0.6;}
+100%{opacity:1;}
 }
 
 .section{
-  padding:40px 20px;
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
+padding:40px 20px;
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
 }
 
 .box{
-  background:rgba(0,0,0,0.7);
-  margin:15px;
-  padding:20px;
-  border-radius:10px;
-  flex:1 1 250px;
-  max-width:300px;
+background:rgba(0,0,0,0.7);
+margin:15px;
+padding:20px;
+border-radius:10px;
+flex:1 1 250px;
+max-width:300px;
 }
 
 button{
-  background:red;
-  color:white;
-  border:none;
-  padding:12px 25px;
-  font-size:16px;
-  border-radius:8px;
-  margin:10px;
-  cursor:pointer;
-  transition: 0.3s;
+background:red;
+color:white;
+border:none;
+padding:12px 25px;
+font-size:16px;
+border-radius:8px;
+margin:10px;
+cursor:pointer;
+transition:0.3s;
 }
 
 button:hover{
-  background:white;
-  color:black;
-  transform: scale(1.1);
+background:white;
+color:black;
+transform:scale(1.1);
 }
 
-footer{
-  background:rgba(0,0,0,0.7);
-  padding:20px;
-  margin-top:40px;
-  font-size:14px;
-  color:#ccc;
+input,textarea{
+width:80%;
+padding:10px;
+margin:10px;
+border-radius:5px;
+border:none;
 }
 
 #clock{
-  font-size:30px;
-  color:#00ff00;
-  font-weight:bold;
+font-size:30px;
+color:#00ff00;
+font-weight:bold;
+}
+
+footer{
+background:rgba(0,0,0,0.7);
+padding:20px;
+margin-top:40px;
 }
 
 </style>
@@ -90,13 +107,16 @@ footer{
 
 <body>
 
+<div class="warning">
+🚫 DON'T USE ALCOHOL – STAY SAFE • STAY STRONG 💪
+</div>
+
 <header>
 <h1>AMR CREATIONS</h1>
 <p>Professional Video Editing</p>
 </header>
 
 <div class="section">
-
 <h2>Services</h2>
 
 <div class="box">✂️ Reels / Shorts Editing</div>
@@ -123,12 +143,25 @@ footer{
 
 <div class="section">
 
+<h2>Order / Message</h2>
+
+<form>
+<input type="text" placeholder="Your Name"><br>
+<input type="email" placeholder="Your Email"><br>
+<textarea placeholder="Type your editing request"></textarea><br>
+<button type="submit">Send Message</button>
+</form>
+
+</div>
+
+<div class="section">
+
 <a href="https://instagram.com/amrut__hendh_7_z" target="_blank">
 <button>Follow me on Instagram</button>
 </a>
 
-<a href="https://wa.me/919207006321?text=I%20want%20edit" target="_blank">
-<button>Message Me on WhatsApp</button>
+<a href="https://wa.me/919207006321?text=I%20want%20video%20editing" target="_blank">
+<button>Order on WhatsApp</button>
 </a>
 
 </div>
@@ -138,23 +171,28 @@ footer{
 </footer>
 
 <script>
-function updateClock() {
-  const now = new Date();
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
-  let seconds = now.getSeconds();
 
-  hours = hours < 10 ? '0'+hours : hours;
-  minutes = minutes < 10 ? '0'+minutes : minutes;
-  seconds = seconds < 10 ? '0'+seconds : seconds;
+function updateClock(){
+const now = new Date();
 
-  document.getElementById('clock').innerText = hours + ':' + minutes + ':' + seconds;
+let h = now.getHours();
+let m = now.getMinutes();
+let s = now.getSeconds();
+
+if(h<10){h="0"+h;}
+if(m<10){m="0"+m;}
+if(s<10){s="0"+s;}
+
+document.getElementById("clock").innerHTML = h+":"+m+":"+s;
 }
 
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
 updateClock();
+
 </script>
 
 </body>
 </html>
+
+
 
