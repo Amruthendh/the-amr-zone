@@ -1,104 +1,63 @@
-```html
+WELCOME MY DEAR 
 <!DOCTYPE html>
 <html>
 <head>
 <title>AMR CREATIONS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-
 <style>
 
 body{
 margin:0;
 font-family:Arial;
-background:url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
+background:#111;
 color:white;
 text-align:center;
 }
 
 header{
-background:rgba(0,0,0,0.7);
-padding:40px;
+background:#000;
+padding:20px;
 }
 
 h1{
-font-family:'Orbitron',sans-serif;
-font-size:45px;
 color:red;
 }
 
-.warning{
-background:linear-gradient(90deg,#ff0000,#ff7300);
-padding:15px;
-font-weight:bold;
-}
-
-.section{
-padding:40px 20px;
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-}
-
-.box{
-background:rgba(0,0,0,0.7);
-margin:15px;
-padding:20px;
-border-radius:10px;
-flex:1 1 250px;
-max-width:400px;
-}
-
-button{
-background:red;
-color:white;
-border:none;
-padding:12px 25px;
-font-size:16px;
-border-radius:8px;
-margin:10px;
-cursor:pointer;
-}
-
-button:hover{
-background:white;
-color:black;
-}
-
-#clock{
-font-size:30px;
-color:#00ff00;
-font-weight:bold;
-}
-
-/* GAME AREA */
-
-#gameArea{
-width:300px;
-height:300px;
-background:#111;
+#game{
+width:350px;
+height:500px;
+background:#4ec0ca;
 margin:auto;
+overflow:hidden;
 position:relative;
-border-radius:10px;
+border:4px solid black;
 }
 
-#circle{
+#bird{
 width:40px;
 height:40px;
-background:red;
-border-radius:50%;
+background:yellow;
 position:absolute;
-cursor:pointer;
+top:200px;
+left:50px;
+border-radius:50%;
+}
+
+.pipe{
+width:60px;
+background:green;
+position:absolute;
+right:-60px;
+}
+
+#score{
+font-size:25px;
+margin:10px;
 }
 
 footer{
-background:rgba(0,0,0,0.7);
-padding:20px;
-margin-top:40px;
+margin-top:20px;
 }
 
 </style>
@@ -106,129 +65,162 @@ margin-top:40px;
 
 <body>
 
-<div class="warning">
-🚫 DON'T USE ALCOHOL – STAY SAFE • STAY STRONG
-</div>
-
 <header>
 <h1>AMR CREATIONS</h1>
-<p>Professional Video Editing</p>
+<p>Flappy Bird Mini Game 🎮</p>
 </header>
 
-<div class="section">
-<h2>Services</h2>
+<h2 id="score">Score: 0</h2>
 
-<div class="box">✂️ Reels / Shorts Editing</div>
-<div class="box">🎮 Gaming Edits</div>
-<div class="box">📹 YouTube Video Editing</div>
+<div id="game">
 
-</div>
-
-<div class="section">
-
-<h2>Price</h2>
-
-<div class="box">Basic Edit – ₹350</div>
-<div class="box">Advanced Edit – ₹600</div>
-
-</div>
-
-<div class="section">
-
-<h2>Current Time</h2>
-<div class="box" id="clock">00:00:00</div>
-
-</div>
-
-<div class="section">
-
-<h2>Mini Game 🎮</h2>
-
-<div class="box">
-
-<p>Click the red circle as fast as you can!</p>
-
-<h3 id="score">Score: 0</h3>
-
-<div id="gameArea">
-<div id="circle"></div>
-</div>
-
-</div>
-
-</div>
-
-<div class="section">
-
-<a href="https://instagram.com/amrut__hendh_7_z" target="_blank">
-<button>Follow me on Instagram</button>
-</a>
-
-<a href="https://wa.me/919207006321?text=I%20want%20video%20editing" target="_blank">
-<button>Order on WhatsApp</button>
-</a>
+<div id="bird"></div>
 
 </div>
 
 <footer>
-© 2026 AMR CREATIONS
+Press SPACE to jump
 </footer>
 
 <script>
 
-/* CLOCK */
+let bird = document.getElementById("bird");
+let game = document.getElementById("game");
 
-function updateClock(){
-const now = new Date();
-
-let h = now.getHours();
-let m = now.getMinutes();
-let s = now.getSeconds();
-
-if(h<10){h="0"+h;}
-if(m<10){m="0"+m;}
-if(s<10){s="0"+s;}
-
-document.getElementById("clock").innerHTML = h+":"+m+":"+s;
-}
-
-setInterval(updateClock,1000);
-updateClock();
-
-/* GAME */
+let birdTop = 200;
+let gravity = 2;
 
 let score = 0;
+let gameOver = false;
 
-const circle = document.getElementById("circle");
+/* gravity */
 
-circle.onclick = function(){
+setInterval(function(){
+
+if(gameOver) return;
+
+birdTop += gravity;
+bird.style.top = birdTop + "px";
+
+if(birdTop > 460){
+gameEnd();
+}
+
+},20);
+
+/* jump */
+
+document.addEventListener("keydown",function(e){
+
+if(e.code === "Space"){
+
+birdTop -= 50;
+
+}
+
+});
+
+/* pipes */
+
+function createPipe(){
+
+if(gameOver) return;
+
+let pipeTop = document.createElement("div");
+let pipeBottom = document.createElement("div");
+
+pipeTop.classList.add("pipe");
+pipeBottom.classList.add("pipe");
+
+let height = Math.floor(Math.random()*200)+50;
+let gap = 150;
+
+pipeTop.style.height = height + "px";
+pipeTop.style.top = "0";
+
+pipeBottom.style.height = (500-height-gap) + "px";
+pipeBottom.style.bottom = "0";
+
+game.appendChild(pipeTop);
+game.appendChild(pipeBottom);
+
+let pipeLeft = 350;
+
+let move = setInterval(function(){
+
+if(gameOver){
+clearInterval(move);
+return;
+}
+
+pipeLeft -= 3;
+
+pipeTop.style.left = pipeLeft + "px";
+pipeBottom.style.left = pipeLeft + "px";
+
+/* score */
+
+if(pipeLeft === 50){
 
 score++;
 
-document.getElementById("score").innerHTML = "Score: " + score;
-
-moveCircle();
+document.getElementById("score").innerHTML="Score: "+score;
 
 }
 
-function moveCircle(){
+/* collision */
 
-let x = Math.random()*260;
+let birdRect = bird.getBoundingClientRect();
+let topRect = pipeTop.getBoundingClientRect();
+let bottomRect = pipeBottom.getBoundingClientRect();
 
-let y = Math.random()*260;
+if(
+birdRect.left < topRect.right &&
+birdRect.right > topRect.left &&
+birdRect.top < topRect.bottom
+){
+gameEnd();
+}
 
-circle.style.left = x + "px";
-circle.style.top = y + "px";
+if(
+birdRect.left < bottomRect.right &&
+birdRect.right > bottomRect.left &&
+birdRect.bottom > bottomRect.top
+){
+gameEnd();
+}
+
+if(pipeLeft < -60){
+pipeTop.remove();
+pipeBottom.remove();
+clearInterval(move);
+}
+
+},20);
 
 }
 
-moveCircle();
+setInterval(createPipe,2000);
+
+/* game end */
+
+function gameEnd(){
+
+gameOver = true;
+
+alert("Game Over! Score: "+score);
+
+location.reload();
+
+}
 
 </script>
 
 </body>
 </html>
-```
+
+
+
 
 
 
