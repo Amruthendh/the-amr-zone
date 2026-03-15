@@ -1,221 +1,124 @@
-WELCOME MY DEAR 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>AMR CREATIONS</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta charset="UTF-8">
+<title>Mini GTA-style Top-down Car Game</title>
 <style>
-
-body{
-margin:0;
-font-family:Arial;
-background:#111;
-color:white;
-text-align:center;
-}
-
-header{
-background:#000;
-padding:20px;
-}
-
-h1{
-color:red;
-}
-
-#game{
-width:350px;
-height:500px;
-background:#4ec0ca;
-margin:auto;
-overflow:hidden;
-position:relative;
-border:4px solid black;
-}
-
-#bird{
-width:40px;
-height:40px;
-background:yellow;
-position:absolute;
-top:200px;
-left:50px;
-border-radius:50%;
-}
-
-.pipe{
-width:60px;
-background:green;
-position:absolute;
-right:-60px;
-}
-
-#score{
-font-size:25px;
-margin:10px;
-}
-
-footer{
-margin-top:20px;
-}
-
+  canvas {
+    background: #87ceeb; /* sky blue background */
+    display: block;
+    margin: 0 auto;
+    border: 2px solid #222;
+  }
 </style>
 </head>
-
 <body>
-
-<header>
-<h1>AMR CREATIONS</h1>
-<p>Flappy Bird Mini Game 🎮</p>
-</header>
-
-<h2 id="score">Score: 0</h2>
-
-<div id="game">
-
-<div id="bird"></div>
-
-</div>
-
-<footer>
-Press SPACE to jump
-</footer>
+<canvas id="gameCanvas" width="800" height="500"></canvas>
 
 <script>
+// Canvas setup
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-let bird = document.getElementById("bird");
-let game = document.getElementById("game");
+// Player car
+const player = {
+    x: 100,
+    y: 100,
+    width: 50,
+    height: 30,
+    speed: 4,
+    img: new Image()
+};
+player.img.src = 'https://i.imgur.com/6Z8E2tR.png'; // car image
 
-let birdTop = 200;
-let gravity = 2;
+// Obstacles / buildings
+const obstacles = [
+    {x: 200, y: 100, width: 100, height: 300},
+    {x: 400, y: 50, width: 50, height: 200},
+    {x: 600, y: 200, width: 150, height: 100},
+];
 
-let score = 0;
-let gameOver = false;
+// Collectibles
+let coins = [
+    {x: 150, y: 300, radius: 10, collected: false},
+    {x: 500, y: 400, radius: 10, collected: false},
+    {x: 700, y: 100, radius: 10, collected: false},
+];
 
-/* gravity */
+// Keyboard controls
+const keys = {};
+document.addEventListener('keydown', e => keys[e.key] = true);
+document.addEventListener('keyup', e => keys[e.key] = false);
 
-setInterval(function(){
-
-if(gameOver) return;
-
-birdTop += gravity;
-bird.style.top = birdTop + "px";
-
-if(birdTop > 460){
-gameEnd();
+// Collision detection
+function isColliding(rect, obj) {
+    return !(rect.x + rect.width < obj.x ||
+             rect.x > obj.x + obj.width ||
+             rect.y + rect.height < obj.y ||
+             rect.y > obj.y + obj.height);
 }
 
-},20);
+function update() {
+    let nextX = player.x;
+    let nextY = player.y;
 
-/* jump */
+    if(keys['ArrowUp']) nextY -= player.speed;
+    if(keys['ArrowDown']) nextY += player.speed;
+    if(keys['ArrowLeft']) nextX -= player.speed;
+    if(keys['ArrowRight']) nextX += player.speed;
 
-document.addEventListener("keydown",function(e){
+    // Check collisions with obstacles
+    const nextRect = {...player, x: nextX, y: nextY};
+    let collision = obstacles.some(ob => isColliding(nextRect, ob));
 
-if(e.code === "Space"){
+    if(!collision) {
+        player.x = nextX;
+        player.y = nextY;
+    }
 
-birdTop -= 50;
-
+    // Collect coins
+    coins.forEach(c => {
+        if(!c.collected) {
+            const dx = (player.x + player.width/2) - c.x;
+            const dy = (player.y + player.height/2) - c.y;
+            if(Math.sqrt(dx*dx + dy*dy) < c.radius + Math.max(player.width, player.height)/2) {
+                c.collected = true;
+            }
+        }
+    });
 }
 
-});
+function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-/* pipes */
+    // Draw roads
+    ctx.fillStyle = '#333';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#666';
+    obstacles.forEach(ob => ctx.fillRect(ob.x, ob.y, ob.width, ob.height));
 
-function createPipe(){
+    // Draw coins
+    coins.forEach(c => {
+        if(!c.collected){
+            ctx.fillStyle = 'gold';
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, c.radius, 0, Math.PI*2);
+            ctx.fill();
+        }
+    });
 
-if(gameOver) return;
-
-let pipeTop = document.createElement("div");
-let pipeBottom = document.createElement("div");
-
-pipeTop.classList.add("pipe");
-pipeBottom.classList.add("pipe");
-
-let height = Math.floor(Math.random()*200)+50;
-let gap = 150;
-
-pipeTop.style.height = height + "px";
-pipeTop.style.top = "0";
-
-pipeBottom.style.height = (500-height-gap) + "px";
-pipeBottom.style.bottom = "0";
-
-game.appendChild(pipeTop);
-game.appendChild(pipeBottom);
-
-let pipeLeft = 350;
-
-let move = setInterval(function(){
-
-if(gameOver){
-clearInterval(move);
-return;
+    // Draw player car
+    ctx.drawImage(player.img, player.x, player.y, player.width, player.height);
 }
 
-pipeLeft -= 3;
-
-pipeTop.style.left = pipeLeft + "px";
-pipeBottom.style.left = pipeLeft + "px";
-
-/* score */
-
-if(pipeLeft === 50){
-
-score++;
-
-document.getElementById("score").innerHTML="Score: "+score;
-
+function gameLoop() {
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
 }
 
-/* collision */
-
-let birdRect = bird.getBoundingClientRect();
-let topRect = pipeTop.getBoundingClientRect();
-let bottomRect = pipeBottom.getBoundingClientRect();
-
-if(
-birdRect.left < topRect.right &&
-birdRect.right > topRect.left &&
-birdRect.top < topRect.bottom
-){
-gameEnd();
-}
-
-if(
-birdRect.left < bottomRect.right &&
-birdRect.right > bottomRect.left &&
-birdRect.bottom > bottomRect.top
-){
-gameEnd();
-}
-
-if(pipeLeft < -60){
-pipeTop.remove();
-pipeBottom.remove();
-clearInterval(move);
-}
-
-},20);
-
-}
-
-setInterval(createPipe,2000);
-
-/* game end */
-
-function gameEnd(){
-
-gameOver = true;
-
-alert("Game Over! Score: "+score);
-
-location.reload();
-
-}
-
+gameLoop();
 </script>
-
 </body>
 </html>
 
